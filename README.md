@@ -18,6 +18,7 @@ La carpeta de la clase incluye:
 
 - `Taller1_IntroduccionR.qmd` → código fuente en Quarto
 - `Taller1_IntroduccionR.html` → versión renderizada de la clase
+- `Taller1_IntroduccionR.pdf` → versión pdf de la clase
 - `data/` → datos utilizados en las diapositivas
 - `figuras/` → imágenes utilizadas en las diapositivas
 - `style.css` → estilos de las presentaciones
