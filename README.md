@@ -3,7 +3,7 @@ Talleres de R para la asignatura Estadística II de la Universidad de Valparaís
 
 **Profesora:** M. Constanza Ayala (maria.ayala@uv.cl)
 
-## Taller 1: Introducción a R y RStudio
+## Taller 1: Introducción a R y RStudio (10/03/2026)
 
 ### Objetivos de la clase
 
