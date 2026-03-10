@@ -1,5 +1,5 @@
 # Estadística II 2026
-Talleres de R para la asignatura Estadística II de la Universidad de Valparaíso, versión 2026.
+Talleres de R para la asignatura Estadística II de Sociología - Universidad de Valparaíso, versión 2026.
 
 **Profesora:** M. Constanza Ayala (maria.ayala@uv.cl)
 
