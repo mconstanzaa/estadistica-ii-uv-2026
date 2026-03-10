@@ -20,7 +20,7 @@ editor: visual
 
 -   Escanea el **QR** o entra en **www.menti.com** con el código **7342 5778**
 
-![](figuras/mentimeter_qr_code.png){fig-align="center" width="106"}
+![](figuras/mentimeter_qr_code.png){fig-align="center" width="30%"}
 
 ## Objetivos de la clase
 
@@ -42,6 +42,7 @@ editor: visual
 
 ::::: columns
 ::: {.column width="50%"}
+::: {style="font-size: 35px;"}
 -   Ejemplos de usos en Sociología:
 
     -   📊 Análisis de encuestas
@@ -49,6 +50,7 @@ editor: visual
     -   📈 Modelos de regresión
 
     -   🌎 Visualización de datos
+:::
 :::
 
 ::: {.column width="50%"}
