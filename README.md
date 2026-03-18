@@ -43,5 +43,5 @@ La carpeta de la clase incluye:
 - `Taller2_ManipulacionDatosR_I.html` → versión renderizada de la clase
 - `Taller 2_ Manipulación de Datos en R I.pdf` → versión pdf de la clase
 - `data/` → datos utilizados en las diapositivas y para el ejercicio
-- `figuras/` → imágenes utilizadas en las diapositivas
+- `figures/` → imágenes utilizadas en las diapositivas
 - `style.css` → estilos de las presentaciones
