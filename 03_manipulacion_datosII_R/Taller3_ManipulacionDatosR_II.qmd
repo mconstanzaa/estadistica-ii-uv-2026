@@ -1,0 +1,367 @@
+---
+title: "Taller 3: Manipulación de Datos en R II"
+subtitle: "Estadística II"
+author: 
+    - name: M. Constanza Ayala <br> [maria.ayala@uv.cl](mailto:maria.ayala@uv.cl){style="color:#6495ED; font-size:30px;"} <br> [Agenda una reunión aquí](https://outlook.office.com/bookwithme/user/6c3f9a95bb9d4c71abbc4d73b48d50d6@uv.cl/meetingtype/HPNElmMJ_UCckWs5QZTpdw2?anonymous&ismsaljsauthenabled&ep=mLinkFromTile){style="color:#6495ED; font-size:30px;"}
+institute: "Escuela de Sociología - Universidad de Valparaíso"
+date: 24 march 2026
+date-format: 'DD [de] MMMM, YYYY'
+lang: es
+format: 
+  revealjs:
+    theme: default
+    slideNumber: "c/t"
+    css: style.css
+    embed-resources: true
+editor: visual
+---
+
+## Pasemos lista mientras descargan los materiales y dejamos todo listo ✨
+
+::: {style="font-size: 30px;"}
+📂 **Paso 1:** Abrimos nuestro proyecto con doble clic en el archivo `.Rproj`
+
+-   Si no tienen proyecto, creamos uno: - `File > New Project > New Directory > New Project` - Creamos carpetas: `data`, `scripts`, `figures`, `output`
+
+<br>
+
+💾 **Paso 2:** Movemos el archivo **"Script Taller 3 EstadisticaII.R"** a la carpeta `scripts`
+
+<br>
+
+📎 **Paso 3:** Verificamos que la base **ELSOC_Wide_2016_2023.RData** y **Base Evaluaciones ELPI III_reducida.RData** esté en la carpeta `data`
+
+> **Todos los materiales los pueden descargar en este link: [Materiales clases](https://github.com/mconstanzaa/estadistica-ii-uv-2026/)**
+:::
+
+## Objetivos de la clase
+
+<br>
+
+-   Retomar el paquete **`dplyr` para manipulación de datos**
+
+<br>
+
+-   **Aplicar funciones** clave: `filter()`, `select()`, `arrange()`
+
+## ¿Qué vimos la semana pasada en R?
+
+<br>
+
+✅ Cargamos una base de datos y la exploramos\
+✅ Exploramos bases de datos con `glimpse()`, `head()` y `colnames()`\
+✅ Introdujimos `dplyr` y el operador `%>%`
+
+<br>
+
+💡 ¡Hoy damos paso a la **manipulación de datos** con `dplyr`!
+
+## Actividades prácticas
+
+A lo largo de la clase realizaremos **tres actividades prácticas** para ejercitar cada función vista.
+
+No tienen nota, pero recomiendo resolverlas en un script aparte para que quede como material de estudio.
+
+-   Crea un script nuevo (no uses el script de actividades de la clase) e incluye un título, tu nombre, correo y fecha. Por ejemplo:
+
+```{r echo=TRUE}
+# Actividades Taller 3 Estadística II --------------------------------------------
+# M. Constanza Ayala (maria.ayala@uv.cl)
+# 24-03-2026
+```
+
+## De cargar a transformar datos
+
+<br>
+
+-   Ya vimos cómo **importar** bases de datos en R.\
+-   El siguiente paso es **trabajar con ellas**: explorarlas, transformarlas y limpiarlas.\
+-   Para esto, usaremos un conjunto de funciones del paquete **`dplyr`**.
+
+## ¿Qué es dplyr?
+
+-   Parte de [**tidyverse**](https://www.tidyverse.org/) (colección de paquetes de R)
+
+-   Pensado para **transformar y limpiar datos**
+
+-   Permite escribir **código legible y encadenado** con `%>%`
+
+![](figures/r_dplyr1.png){fig-align="center"}
+
+## Carguemos el paquete y una base de datos
+
+```{r echo=TRUE}
+library(dplyr)
+
+load("data/Base Evaluaciones ELPI III_reducida.RData")
+```
+
+## Ocupemos `%>%`
+
+::: {style="font-size: 28px;"}
+```{r echo=TRUE}
+# Exploremos los datos con dplyr
+data %>% glimpse() # Vista previa 
+
+data %>% head()    # Primera 6 observaciones
+```
+:::
+
+------------------------------------------------------------------------
+
+```{r echo=TRUE}
+data %>% colnames() # Nombres columnas/variables
+```
+
+## Manipulación de datos con dplyr
+
+![](figures/r_dplyr2.png){fig-align="center"}
+
+## Transformación usando vectores
+
+![](figures/r_dplyr3.png){fig-align="center"}
+
+## filter()
+
+<br>
+
+-   Devuelve filas que cumplen con al menos una condición lógica
+-   Puedes usar operadores lógicos: $==$, $>$, $<$, $!=$, &, $|$
+
+```{r echo=FALSE, include=FALSE}
+table(data$sexo)
+data$sexo <-  factor(data$sexo,
+                     levels = c(1:2), #indicamos los niveles
+                     labels = c("Hombre", "Mujer"))# les ponemos etiquetas
+```
+
+```{r echo=TRUE}
+#Hombre
+data_hombre <- data %>% 
+  filter(sexo=="Hombre") 
+dim(data_hombre)
+
+#Mujer
+data_mujer <- data %>% 
+  filter(sexo=="Mujer")
+dim(data_mujer)
+```
+
+------------------------------------------------------------------------
+
+-   Puedes aplicar más de una condición:
+
+<br>
+
+```{r echo=TRUE}
+data_mat1 <- data %>% 
+  filter(wm_pb_pa >=36 & wm_pb_fd==36)
+dim(data_mat1)
+
+data_mat2 <- data %>% 
+  filter(wm_pb_pa >=36 | wm_pb_fd==36)
+dim(data_mat2)
+```
+
+## Operadores lógicos en R
+
+::: {style="font-size: 30px;"}
+-   Sirven para hacer comparaciones y construir condiciones en funciones
+
+<br>
+
+| Operador | Significado | Ejemplo |
+|----|----|----|
+| `==` | igual a | `species == "Human"` |
+| `!=` | distinto de | `gender != "male"` |
+| `>` | mayor que | `mass > 80` |
+| `<` | menor que | `height < 180` |
+| `&` | **y** lógico (ambas) | `species == "Human" & mass > 75` |
+| `|` | **o** lógico (una u otra) | `species == "Human" | species == "Droid"` |
+:::
+
+## Actividad práctica 1
+
+::: {style="font-size: 30px;"}
+1.  Cargar el paquete `dplyr` utilizando la función `library()` en una sección del script llamada `Paquetes`.
+
+2.  Cargar la base de datos `ELSOC_Wide_2016_2023.RData` utilizando la función `load()` en una sección del script llamada `Base de datos`.
+
+3.  Explorar la base de datos utilizando el pipe de dplyr `%>%` con las funciones `glimpse()`, `head()` y `colnames()` en una sección del script llamada `Exploración base de datos`.
+
+4.  Crea una base de datos llamada `data_elsoc_filtrada` aplicando el siguiente filtro con `filter()` en una sección del script llamada `Filtro 1`:
+
+    -   Personas que hayan participado en el último levantamiento (2023) (`ola_w07`, categoría `1`)
+    -   Explora la nueva base de datos con `glimpse()`
+:::
+
+```{r, eval=T, include=FALSE}
+library(dplyr)
+
+load("data/ELSOC_Wide_2016_2023.RData")
+```
+
+## select()
+
+::: {style="font-size: 38px;"}
+-   Devuelve solo la o las columnas que especifiques
+
+```{r echo=TRUE}
+data1 <- data %>% 
+  select(1:3)
+data1 %>% colnames()
+
+data2 <- data %>% 
+  select("folio", "wm_pb_pa")
+data2 %>% colnames()
+
+data3 <- data %>% 
+  select("folio", "wm_pb_pa":"wm_pb_cc")
+data3 %>% colnames()
+
+data4 <- data %>% 
+  select(1,edad_mesesr,sexo,idregion,wm_pb_pa:wm_pb_cc)
+data4 %>% colnames()
+```
+:::
+
+------------------------------------------------------------------------
+
+-   También puedes usar: select(-columna) para excluir
+
+```{r echo=TRUE}
+data5 <- data %>% 
+  select(-sexo)
+data5 %>% colnames()
+```
+
+## Actividad práctica 2
+
+1.  A partir de la base de datos `data_elsoc_filtrada`, selecciona las siguientes variables con `select()` en una sección del script llamada `Selección de variables 1`: `idencuesta`, `tipo_atricion`, `tipo_caso`. Luego, explora la base de datos con `%>%` y `glimpse()`.
+
+<br>
+
+2.  Guarda la base de datos editada en formato RData en la carpeta `output` con el nombre `data_elsoc_filtrada`. Utiliza la función `save()`.
+
+## arrange()
+
+-   Ordena filas por una o más variables
+
+```{r echo=TRUE}
+data_arrange1 <- data4 %>% 
+  arrange(wm_pb_pa)  # Por defecto el orden es creciente
+head(data_arrange1, n=15)
+```
+
+------------------------------------------------------------------------
+
+-   Usa desc() para ordenar de forma descendente
+
+```{r echo=TRUE}
+data_arrange2 <- data4 %>% 
+  arrange(desc(wm_pb_pa)) # Decreciente
+head(data_arrange2, n=15)
+```
+
+------------------------------------------------------------------------
+
+-   También puedes ordenar por varias columnas
+
+```{r echo=TRUE}
+data_arrange3 <- data4 %>% 
+  arrange(wm_pb_pa,wm_pb_fd)  # Utilizando dos variables
+head(data_arrange3, n=15)
+```
+
+## Actividad práctica 3
+
+::: {style="font-size: 26px;"}
+1.  A partir de la base de datos `elsoc_wide_2016_2023`, crea una base de datos llamada `data_elsoc_2023` aplicando los siguientes filtros con `filter()` en una sección del script llamada `Filtros`:
+
+    -   Personas que hayan participado en el último levantamiento (2023) (`ola_w07`, categoría `1`)
+    -   Personas entre 20 y 60 años (`m0_edad_w07`)
+    -   Explora la nueva base de datos con `dim()`
+
+2.  Selecciona las siguientes variables con `select()` en una sección del script llamada `Selección de variables`: `idencuesta`, `tipo_atricion`, `tipo_caso`, `m0_sexo_w07`, `m0_edad_w07`, `comuna_w07`, `region_w07`. Luego, explora la base de datos con `glimpse()`.
+
+3.  Ordena la base de datos de forma ascendente según las variables `region_w07` e `idencuesta` usando `arrange()` en una sección del script llamada `Arrange`. El objetivo es que, dentro de cada región, los casos queden ordenados según su id.
+
+4.  Guarda la base de datos editada en formato RData en la carpeta `output` con el nombre `data_elsoc_2023`. Utiliza la función `save()`.
+:::
+
+```{r, eval=T, include=FALSE}
+names(elsoc_wide_2016_2023)
+table(elsoc_wide_2016_2023$ola_w07,exclude = F)
+table(elsoc_wide_2016_2023$m0_edad_w07,exclude = )
+
+dim(elsoc_wide_2016_2023)
+data_elsoc_2023 <- elsoc_wide_2016_2023 %>% 
+  filter(ola_w07==1 & (m0_edad_w07 %in% c(20:60)))
+
+table(data_elsoc_2023$ola_w07,exclude = F)
+table(data_elsoc_2023$m0_edad_w07,exclude = )
+
+data_elsoc_2023 %>% dim()
+
+
+data_elsoc_2023 <- data_elsoc_2023 %>%
+  select(
+    idencuesta,
+    tipo_atricion,
+    tipo_caso,
+    m0_sexo_w07,
+    m0_edad_w07,
+    comuna_w07,
+    region_w07
+  )
+
+data_elsoc_2023 <- data_elsoc_2023 %>%
+  arrange(region_w07,idencuesta)
+
+```
+
+## ❓ Preguntas y aclaraciones
+
+<br>
+
+💬 **¿Dudas sobre lo visto hoy?**
+
+-   Tómense un momento para reflexionar y compartir preguntas sobre el contenido.
+
+-   Espacio para responder inquietudes y aclarar conceptos clave.
+
+## Resumen clase de hoy
+
+<br>
+
+::: {style="font-size: 35px;"}
+✅ Retomamos `dplyr` para manipular datos
+
+<br>
+
+✅ Usamos funciones clave:
+
+-   `filter()` para seleccionar filas según condiciones
+
+-   `select()` para elegir o eliminar columnas
+
+-   `arrange()` para ordenar los datos
+:::
+
+## 📆 Próxima sesión (martes)
+
+<br>
+
+-   Continuaremos con manipulación de datos con `tidyverse`
+
+-   Ejercicio individual en R (con nota)
+
+## 📚 Sugerencias lecturas para reforzar R
+
+<br>
+
+-   Wickham & Grolemund. R for Data Science (acceso en línea biblioteca, en español: <https://es.r4ds.hadley.nz/>)
+
+-   [AnalizaR Datos Políticos](https://arcruz0.github.io/libroadp/index.html)
+
+-   [YaRrr! The Pirate's Guide to R](https://bookdown.org/ndphillips/YaRrr/)
