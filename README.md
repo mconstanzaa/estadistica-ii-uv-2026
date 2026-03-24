@@ -43,5 +43,30 @@ La carpeta de la clase incluye:
 - `Taller2_ManipulacionDatosR_I.html` → versión renderizada de la clase
 - `Taller 2_ Manipulación de Datos en R I.pdf` → versión pdf de la clase
 - `data/` → datos utilizados en las diapositivas y para el ejercicio
+- `scripts/` → script de actividades de la clase
+- `figures/` → imágenes utilizadas en las diapositivas
+- `output/` → resultados generados durante el ejercicio
+- `style.css` → estilos de las presentaciones
+
+------
+
+## Taller 3: Manipulación de datos en R con dplyr II (24/03/2026)
+
+### Objetivos de la clase
+
+-   Retomar el paquete **`dplyr` para manipulación de datos**
+-   **Aplicar funciones** clave: `filter()`, `select()`, `arrange()`
+
+### Contenido de la clase
+
+La carpeta de la clase incluye:
+
+- `Taller3_ManipulacionDatosR_II.qmd` → código fuente en Quarto
+- `Taller3_ManipulacionDatosR_II.html` → versión renderizada de la clase
+- `Taller 3_ Manipulación de Datos en R II.pdf` → versión pdf de la clase
+- `data/` → datos utilizados en las diapositivas y para los ejercicios
+- `scripts/` → script de actividades de la clase
 - `figures/` → imágenes utilizadas en las diapositivas
 - `style.css` → estilos de las presentaciones
+
+
