@@ -29,7 +29,7 @@ editor: visual
 
 <br>
 
-📎 **Paso 3:** Movemos la base **"Base Evaluaciones ELPI III_reducida.dta"** a la carpeta `data`\
+📎 **Paso 3:** Movemos las bases **ELSOC_Wide_2016_2023.RData"** y **Base Evaluaciones ELPI III_reducida.RData** a la carpeta `data`\
 💡 ¡Recuerda mantener el nombre original del archivo para facilitar su lectura en R!
 
 > **Todos los materiales los pueden descargar en este link: [Materiales clases](https://github.com/mconstanzaa/estadistica-ii-uv-2026/)**
