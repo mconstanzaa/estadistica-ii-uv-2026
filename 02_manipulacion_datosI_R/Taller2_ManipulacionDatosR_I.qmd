@@ -29,7 +29,7 @@ editor: visual
 
 <br>
 
-📎 **Paso 3:** Movemos las bases **ELSOC_Wide_2016_2023.RData"** y **Base Evaluaciones ELPI III_reducida.RData** a la carpeta `data`\
+📎 **Paso 3:** Movemos las bases **ELSOC_Wide_2016_2023.RData** y **Base Evaluaciones ELPI III_reducida.RData** a la carpeta `data`\
 💡 ¡Recuerda mantener el nombre original del archivo para facilitar su lectura en R!
 
 > **Todos los materiales los pueden descargar en este link: [Materiales clases](https://github.com/mconstanzaa/estadistica-ii-uv-2026/)**
@@ -256,11 +256,6 @@ data[,c("sexo","nivel_edu_niño")] #todas las filas de las columnas
     -   Por ejemplo: `data[1,1]`
 :::
 
-```{r, eval=T, include=FALSE}
-library(dplyr)
-
-load("data/ELSOC_Wide_2016_2023.RData")
-```
 
 ## De cargar a transformar datos
 
@@ -284,6 +279,9 @@ load("data/ELSOC_Wide_2016_2023.RData")
 
 ::: {style="font-size: 28px;"}
 ```{r echo=TRUE}
+# Cargamos la librería
+library(dplyr)
+
 # Exploremos los datos con dplyr
 data %>% glimpse() # Vista previa 
 
@@ -444,42 +442,12 @@ head(data_arrange3, n=15)
 4.  Guarda la base de datos editada en formato RData en la carpeta `output` con el nombre `data_elsoc_2023`.
 :::
 
-```{r, eval=T, include=FALSE}
-names(elsoc_wide_2016_2023)
-table(elsoc_wide_2016_2023$ola_w07,exclude = F)
-table(elsoc_wide_2016_2023$m0_edad_w07,exclude = )
-
-dim(elsoc_wide_2016_2023)
-data_elsoc_2023 <- elsoc_wide_2016_2023 %>% 
-  filter(ola_w07==1 & (m0_edad_w07 %in% c(20:60)))
-
-table(data_elsoc_2023$ola_w07,exclude = F)
-table(data_elsoc_2023$m0_edad_w07,exclude = )
-
-data_elsoc_2023 %>% dim()
-
-
-data_elsoc_2023 <- data_elsoc_2023 %>%
-  select(
-    idencuesta,
-    tipo_atricion,
-    tipo_caso,
-    m0_sexo_w07,
-    m0_edad_w07,
-    comuna_w07,
-    region_w07
-  )
-
-data_elsoc_2023 <- data_elsoc_2023 %>%
-  arrange(region_w07,idencuesta)
-
-```
 
 ## ❓ Preguntas y aclaraciones
 
 <br>
 
-💬 ¿**Dudas sobre lo visto hoy?**
+💬 **¿Dudas sobre lo visto hoy?**
 
 -   Tómense un momento para reflexionar y compartir preguntas sobre el contenido.
 
