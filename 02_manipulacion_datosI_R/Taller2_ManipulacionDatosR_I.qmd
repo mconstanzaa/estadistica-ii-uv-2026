@@ -256,7 +256,6 @@ data[,c("sexo","nivel_edu_niño")] #todas las filas de las columnas
     -   Por ejemplo: `data[1,1]`
 :::
 
-
 ## De cargar a transformar datos
 
 <br>
@@ -442,7 +441,6 @@ head(data_arrange3, n=15)
 4.  Guarda la base de datos editada en formato RData en la carpeta `output` con el nombre `data_elsoc_2023`.
 :::
 
-
 ## ❓ Preguntas y aclaraciones
 
 <br>
@@ -455,7 +453,8 @@ head(data_arrange3, n=15)
 
 ## Resumen clase de hoy
 
-::: {style="font-size: 35px;"}
+<br>
+
 ✅ Cargamos una base de datos y la exploramos
 
 ✅ Introdujimos `dplyr` para manipular datos
@@ -468,14 +467,12 @@ head(data_arrange3, n=15)
 
 -   `arrange()` para ordenar los datos
 
-✅ Vimos cómo tratar valores perdidos (`NA`) con `rowSums()`, `rowMeans()` y `TRUE ~ NA_character_`
-:::
 
 ## 📆 Próxima sesión (martes)
 
 <br>
 
--   Continuaremos con manipulación de datos con `tidyverse`
+-   Continuaremos con manipulación de datos con `dplyr`
 
 ## 📚 Sugerencias lecturas para reforzar R
 
