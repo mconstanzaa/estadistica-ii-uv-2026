@@ -69,4 +69,26 @@ La carpeta de la clase incluye:
 - `figures/` → imágenes utilizadas en las diapositivas
 - `style.css` → estilos de las presentaciones
 
+------
 
+## Taller 4: Manipulación de datos en R con dplyr III (31/03/2026)
+
+- **Esta clase incluye Ejercicio individual 2**
+
+### Objetivos de la clase
+
+-   Retomar el paquete **`dplyr` para manipulación de datos**
+-   **Transformar y crear nuevas variables** con `mutate()`
+-   Aplicar `mutate()` para **operaciones aritméticas**, **recodificación de valores perdidos** y **recodificación de categorías** con `case_when()`
+
+### Contenido de la clase
+
+La carpeta de la clase incluye:
+
+- `Taller4_ManipulacionDatosR_III.qmd` → código fuente en Quarto
+- `Taller4_ManipulacionDatosR_III.html` → versión renderizada de la clase
+- `Taller4_ManipulacionDatosR_III.pdf` → versión pdf de la clase
+- `data/` → datos utilizados en las diapositivas y para el ejercicio
+- `scripts/` → script de actividades de la clase
+- `figures/` → imágenes utilizadas en las diapositivas
+- `style.css` → estilos de las presentaciones
