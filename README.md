@@ -95,8 +95,6 @@ La carpeta de la clase incluye:
 
 --------
 
-------
-
 ## Taller 5: Probabilidad y Valor P en R (07/04/2026)
 
 ### Objetivos de la clase
