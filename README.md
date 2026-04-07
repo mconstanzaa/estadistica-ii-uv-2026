@@ -92,3 +92,27 @@ La carpeta de la clase incluye:
 - `scripts/` → script de actividades de la clase
 - `figures/` → imágenes utilizadas en las diapositivas
 - `style.css` → estilos de las presentaciones
+
+--------
+
+------
+
+## Taller 5: Probabilidad y Valor P en R (07/04/2026)
+
+### Objetivos de la clase
+
+-   Calcular **probabilidades empíricas** en R a partir de datos simulados
+-   Calcular **probabilidades condicionales** con tablas de contingencia
+-   Calcular **probabilidades bajo la distribución normal** con `pnorm()`
+-   Calcular el **puntaje Z** en R y usarlo para obtener probabilidades
+-   Calcular e interpretar el **valor P** de una prueba sobre proporciones con `prop.test()`
+
+### Contenido de la clase
+
+La carpeta de la clase incluye:
+
+- `Taller5_ProbabilidadValorP_R.qmd` → código fuente en Quarto
+- `Taller5_ProbabilidadValorP_R.html` → versión renderizada de la clase
+- `Taller5_ProbabilidadValorP_R.pdf` → versión pdf de la clase
+- `scripts/` → script de actividades de la clase
+- `style.css` → estilos de las presentaciones
