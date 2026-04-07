@@ -1,0 +1,540 @@
+---
+title: "Taller 5: Probabilidad y Valor P en R"
+subtitle: "Estadística II"
+author: 
+    - name: M. Constanza Ayala <br> [maria.ayala@uv.cl](mailto:maria.ayala@uv.cl){style="color:#6495ED; font-size:30px;"} <br> [Agenda una reunión aquí](https://outlook.office.com/bookwithme/user/6c3f9a95bb9d4c71abbc4d73b48d50d6@uv.cl/meetingtype/HPNElmMJ_UCckWs5QZTpdw2?anonymous&ismsaljsauthenabled&ep=mLinkFromTile){style="color:#6495ED; font-size:30px;"}
+institute: "Escuela de Sociología - Universidad de Valparaíso"
+date: 7 april 2026
+date-format: 'DD [de] MMMM, YYYY'
+lang: es
+format: 
+  revealjs:
+    theme: default
+    slideNumber: "c/t"
+    css: style.css
+    embed-resources: true
+editor: visual
+---
+
+## Pasemos lista mientras descargan los materiales y dejamos todo listo ✨
+
+::: {style="font-size: 30px;"}
+📂 **Paso 1:** Abrimos nuestro proyecto con doble clic en el archivo `.Rproj`
+
+-   Si no tienen proyecto, creamos uno: `File > New Project > New Directory > New Project` — creamos carpetas: `data`, `scripts`, `figures`, `output`
+
+<br>
+
+💾 **Paso 2:** Movemos el archivo **"Script Taller 5 EstadisticaII.R"** a la carpeta `scripts`
+
+<br>
+
+📎 **Paso 3:** Hoy trabajaremos con **datos simulados**, no con bases externas
+
+> **Todos los materiales los pueden descargar en este link: [Materiales clases](https://github.com/mconstanzaa/estadistica-ii-uv-2026/)**
+:::
+
+## Objetivos de la clase
+
+-   Calcular **probabilidades empíricas** en R a partir de datos simulados
+
+-   Calcular **probabilidades condicionales** con tablas de contingencia
+
+-   Calcular **probabilidades bajo la distribución normal** con `pnorm()`
+
+-   Calcular el **puntaje Z** en R y usarlo para obtener probabilidades
+
+-   Calcular e interpretar el **valor P** de una prueba sobre proporciones con `prop.test()`
+
+## ¿Qué vimos la última clase?
+
+<br>
+
+✅ Aprendimos a usar mutate() para crear nuevas variables\
+✅ Calculamos sumas y promedios con y sin NA\
+✅ Recodificamos valores perdidos con case_when()\
+✅ Recodificamos categorías con case_when()
+
+<br>
+
+💡 ¡Hoy nos movemos hacia el análisis estadístico: probabilidades y valor P!
+
+## Actividades prácticas
+
+A lo largo de la clase realizaremos **tres actividades prácticas** para ejercitar cada función vista.
+
+No tienen nota, pero recomiendo resolverlas en un script aparte para que quede como material de estudio.
+
+-   Crea un script nuevo (no uses el script de actividades de la clase) e incluye un título, tu nombre, correo y fecha. Por ejemplo:
+
+```{r echo=TRUE}
+# Actividades Taller 5 Estadística II --------------------------------------------
+# M. Constanza Ayala (maria.ayala@uv.cl)
+# 09-06-2026
+```
+
+------------------------------------------------------------------------
+
+## Probabilidad empírica en R
+
+::: {style="font-size: 30px;"}
+La probabilidad empírica se obtiene contando frecuencias observadas:
+
+$$P'(A) = \frac{\text{frecuencia observada}}{\text{total de intentos}}$$
+
+Podemos simularla en R. Por ejemplo, lanzar una moneda 100 veces:
+
+```{r echo=TRUE}
+set.seed(2026)                                           # Fija la semilla para reproducibilidad
+lanzamientos <- sample(c("cara", "sello"),               # Vector con los posibles resultados
+                       size = 100,                       # Número de lanzamientos
+                       replace = TRUE)                   # Con reemplazo (cada lanzamiento es independiente)
+
+# Frecuencia observada
+table(lanzamientos)
+
+# Probabilidad empírica
+prop.table(table(lanzamientos))
+```
+:::
+
+::: {style="font-size: 25px;"}
+* A medida que aumenta `size`, la probabilidad empírica se acerca a 0.50 (**Ley de los grandes números**).
+:::
+
+## Probabilidad condicional en R
+
+::: {style="font-size: 28px;"}
+La probabilidad condicional P(A\|B) es la probabilidad de A sabiendo que B ya ocurrió:
+
+$$P(A|B) = \frac{P(A \cap B)}{P(B)}$$
+
+*¿Cuál es la probabilidad de votar por X, dado que la persona es mujer?*
+
+```{r echo=TRUE}
+set.seed(2026)
+encuesta <- data.frame(
+  sexo = sample(c("Mujer", "Hombre"), 1000, replace = TRUE),  # Sin prob → probabilidad igual (50/50)
+  voto = sample(c("Candidato X", "Otro"), 1000, replace = TRUE,
+                prob = c(0.55, 0.45))                          # Con prob → simula que X es más votado
+)
+tabla <- table(encuesta$sexo, encuesta$voto)                   # Tabla de contingencia sexo × voto
+
+prop.table(tabla, margin = 1)  # P(voto | sexo): fila es la condición
+prop.table(tabla, margin = 2)  # P(sexo | voto): columna es la condición
+```
+:::
+
+----
+
+## ¿Qué responde cada tabla?
+
+::: {style="font-size: 31px;"}
+**`margin = 1` → P(voto | sexo)**
+
+- *Dado que la persona es mujer, ¿qué probabilidad tiene de votar por el Candidato X?*
+- Cada fila suma 1. La condición es el sexo.
+- Útil cuando queremos saber cómo varía el voto **según** el sexo.
+
+<br>
+
+**`margin = 2` → P(sexo | voto)**
+
+- *Dado que la persona votó por el Candidato X, ¿qué probabilidad hay de que sea mujer?*
+- Cada columna suma 1. La condición es el voto.
+- Útil cuando queremos saber cómo se compone el electorado de cada candidato.
+:::
+
+
+
+## Actividad práctica 1
+
+::: {style="font-size: 33px;"}
+En una sección del script llamada `Probabilidad`:
+
+1.  Simula el lanzamiento de un dado 1000 veces con `sample(1:6, ...)`. Calcula la probabilidad empírica de cada valor del dado con `prop.table()`. ¿Se aproxima a 1/6 ≈ 0.167?
+
+2. Simula una encuesta de 500 personas con dos variables usando `data.frame()` y `sample()`:
+
+  * `clase_social`: "`Alta`", "`Media`", "`Baja`" (con probabilidades 0.20, 0.50, 0.30)
+  * `confianza_instituciones`: "`Sí`" o "`No`" (con probabilidades 0.30, 0.70)
+  * Calcula la probabilidad condicional P(confianza | clase social) con `prop.table()`. ¿Qué observas?
+:::
+
+
+------------------------------------------------------------------------
+
+## Distribución normal en R
+
+::: {style="font-size: 30px;"}
+La distribución normal describe variables continuas con forma de campana simétrica. Sus parámetros son la **media (μ)** y la **desviación estándar (σ)**.
+:::
+
+```{r echo=TRUE}
+library(tidyverse)
+tibble(x = seq(-4, 4, 0.01)) %>%        # Crea secuencia de valores Z entre -4 y 4
+  mutate(densidad = dnorm(x,             # Calcula la densidad normal para cada valor de x
+                          mean = 0,      # Media = 0 (distribución estándar)
+                          sd = 1)) %>%   # Desviación estándar = 1
+  ggplot(aes(x = x, y = densidad)) +    # Define los ejes del gráfico
+  geom_line(color = "steelblue",        # Dibuja la curva
+            linewidth = 1.2) +          # Grosor de la línea
+  labs(title = "Distribución Normal Estándar (μ = 0, σ = 1)",
+       x = "Valor Z", y = "Densidad") + # Títulos de ejes
+  theme_minimal()                        # Estilo limpio sin fondo gris
+```
+
+
+
+## Puntaje Z en R
+
+::: {style="font-size: 30px;"}
+El puntaje Z estandariza cualquier valor de una distribución normal:
+
+$$Z = \frac{X - \mu}{\sigma}$$
+```{r echo=TRUE}
+# Ejemplo: ingreso mensual ~ Normal(μ = $650.000, σ = $400.000)
+# ¿Cuál es el puntaje Z de una persona que gana $1.200.000?
+mu <- 650000
+sigma <- 400000
+X <- 1200000
+
+Z <- (X - mu) / sigma
+Z
+```
+
+Un Z = `r (1200000 - 650000) / 400000` significa que este ingreso está a `r (1200000 - 650000) / 400000` desviaciones estándar **por encima** de la media, es decir, es una persona con ingresos relativamente altos respecto al promedio nacional.
+:::
+
+
+------------------------------------------------------------------------
+
+::: {style="font-size: 30px;"}
+Podemos calcular el puntaje Z para varios ejemplos a la vez:
+```{r echo=TRUE}
+casos <- tibble(
+  variable  = c("Ingreso mensual", "Años de escolaridad", "Puntaje autoritarismo", "Horas de trabajo semanal"),
+  X         = c(1200000,           8,                     65,                      38),
+  mu        = c(650000,            11,                    50,                      45),
+  sigma     = c(400000,            3,                     10,                      8)
+)
+
+casos <- casos %>%
+  mutate(Z = (X - mu) / sigma)
+
+casos
+```
+
+> Los valores Z positivos indican que la observación está **por encima** de la media; los negativos, **por debajo**. Por ejemplo, 8 años de escolaridad y 38 horas de trabajo semanal están por debajo del promedio nacional en sus respectivas distribuciones.
+:::
+
+
+## Calcular probabilidades con `pnorm()`
+
+::: {style="font-size: 30px;"}
+Una vez calculado el puntaje Z, podemos obtener la probabilidad asociada con `pnorm()`, que calcula el **área bajo la curva** a la izquierda de un valor Z. Equivale a consultar la tabla Z, pero en R.
+```{r echo=TRUE}
+# P(Z < 1.375) → probabilidad de ganar menos de $1.200.000
+pnorm(1.375)
+```
+*️ Aproximadamente el 92% de las observaciones tienen ingresos menores a $1.200.000.
+```{r echo=TRUE}
+# P(0 < Z < 1.375) → área entre la media y nuestro valor
+pnorm(1.375) - pnorm(0)
+```
+* Cerca del 42% de las observaciones tienen ingresos entre $650.000 y $1.200.000.
+```{r echo=TRUE}
+# P(Z > 1.375) → probabilidad de ganar más de $1.200.000
+pnorm(1.375, lower.tail = FALSE)
+```
+*️ Solo el 8% de las observaciones tienen ingresos superiores a $1.200.000.
+:::
+
+---
+
+> También podemos pasar directamente los valores originales sin calcular Z antes:
+
+```{r echo=TRUE}
+# P(ingreso entre $650.000 y $1.200.000) directamente
+pnorm(1200000, mean = 650000, sd = 400000) - pnorm(650000, mean = 650000, sd = 400000)
+```
+
+
+## Prob. con valores Z negativos
+
+::: {style="font-size: 30px;"}
+Los Z negativos corresponden a valores **por debajo** de la media — como los casos de escolaridad y horas de trabajo que vimos antes:
+```{r echo=TRUE}
+# P(Z < -1) → probabilidad de tener menos de 8 años de escolaridad
+pnorm(-1)
+```
+* Aproximadamente el 16% de las observaciones tienen menos de 8 años de escolaridad.
+```{r echo=TRUE}
+# P(-0.875 < Z < 1.375) → probabilidad de trabajar entre 38 y 50 horas semanales
+pnorm(1.375) - pnorm(-0.875)
+```
+*️ Cerca del 73% de las observaciones trabajan entre 38 y 50 horas semanales.
+```{r echo=TRUE}
+# P(Z > -0.875) → probabilidad de trabajar más de 38 horas semanales
+pnorm(-0.875, lower.tail = FALSE)
+```
+*️ Aproximadamente el 81% de las observaciones trabajan más de 38 horas semanales.
+:::
+
+
+
+## Actividad práctica 2
+
+::: {style="font-size: 33px;"}
+En una sección del script llamada `Puntaje Z y pnorm`:
+
+1.  Calcula el puntaje Z para las siguientes situaciones y luego la probabilidad con `pnorm()`:
+
+    a.  Puntajes de ansiedad con μ = 50 y σ = 12. ¿Cuál es la probabilidad de obtener entre 50 y 62 puntos?
+    b.  Salarios con μ = 500.000 y σ = 80.000. ¿Cuál es la probabilidad de ganar **más de** \$580.000?
+    c.  Estaturas con μ = 170 y σ = 8. ¿Cuál es la probabilidad de medir **menos de** 162 cm?
+
+2.  Para el caso (a), verifica que obtienes el mismo resultado calculando primero el Z manualmente y luego usando `pnorm(Z)`, y usando `pnorm(62, mean = 50, sd = 12) - pnorm(50, mean = 50, sd = 12)`.
+:::
+
+
+------------------------------------------------------------------------
+
+## Del puntaje Z al valor P
+
+<br>
+
+* El **valor P** es la probabilidad de obtener un resultado igual o más extremo que el observado, asumiendo que la hipótesis nula (H₀) es verdadera.
+
+<br>
+
+* En términos prácticos: el valor P es un **área bajo la curva normal**, exactamente lo que calcula `pnorm()`.
+
+
+## Nivel de significancia y valores críticos
+
+::: {style="font-size: 30px;"}
+Recordemos la relación entre α y los valores Z críticos, que podemos obtener con `qnorm()`:
+
+```{r echo=TRUE}
+qnorm(0.975)   # Z crítico para α = 0.05 (dos colas)
+qnorm(0.995)   # Z crítico para α = 0.01 (dos colas)
+qnorm(0.950)   # Z crítico para α = 0.10 (dos colas)
+```
+
+| Nivel de confianza | α    | Z crítico (dos colas) |
+|--------------------|------|-----------------------|
+| 90%                | 0.10 | ±1.645                |
+| 95%                | 0.05 | ±1.960                |
+| 99%                | 0.01 | ±2.576                |
+:::
+
+
+## Hipótesis nula y alternativa
+
+::: {style="font-size: 30px;"}
+Antes de calcular el valor P, siempre formulamos las hipótesis:
+
+-   **H₀** (nula): afirma que NO hay diferencia o relación — siempre incluye "igual a"
+-   **Hₐ** (alternativa): lo que queremos demostrar
+
+La dirección de Hₐ determina el tipo de prueba:
+
+| Hₐ         | Tipo de prueba     | `alternative` en R |
+|------------|--------------------|--------------------|
+| p ≠ valor  | Dos colas          | `"two.sided"`      |
+| p \> valor | Una cola derecha   | `"greater"`        |
+| p \< valor | Una cola izquierda | `"less"`           |
+
+> H₀ siempre se formula como la negación de lo que queremos demostrar. Se asume verdadera hasta que la evidencia diga lo contrario.
+:::
+
+
+
+## Ejemplo 1: Género en cargos directivos (valor P > 0.05)
+
+::: {style="font-size: 30px;"}
+En Chile, se espera que el 50% de los cargos directivos sean ocupados por mujeres si hubiera paridad. En una muestra de 120 empresas, se observa que el 44% de los cargos directivos son ocupados por mujeres. ¿Es esta proporción significativamente diferente del 50%?
+
+-   **H₀**: p = 0.50 — **Hₐ**: p ≠ 0.50 — **α = 0.05**
+```{r echo=TRUE}
+prop.test(x = 53, n = 120, p = 0.50, alternative = "two.sided")
+```
+:::
+
+## Interpretando el resultado
+
+::: {style="font-size: 30px;"}
+```{r echo=FALSE}
+res1 <- prop.test(x = 53, n = 120, p = 0.50, alternative = "two.sided")
+```
+
+Valor P = `r round(res1$p.value, 3)`
+
+**Decisión con α = 0.05:**
+
+-   `r round(res1$p.value, 3)` **\>** 0.05 → **No rechazamos H₀**
+-   La diferencia entre 0.44 y 0.50 **no es estadísticamente significativa**
+-   Conclusión: no hay evidencia suficiente de que la proporción de mujeres en cargos directivos sea diferente del 50%
+
+<br>
+
+> Esto no significa que haya paridad real, solo que con esta muestra de 120 empresas no tenemos suficiente evidencia estadística para afirmar lo contrario. Con una muestra mayor, el resultado podría cambiar.
+:::
+
+
+
+## Visualizando el valor P
+
+::: {style="font-size: 20px;"}
+```{r echo=TRUE}
+# Calculamos el Z observado para nuestra proporción (44% vs 50% esperado)
+z_obs <- (0.44 - 0.50) / sqrt(0.50 * 0.50 / 120)
+
+tibble(x = seq(-4, 4, 0.01)) %>%
+  mutate(y = dnorm(x)) %>%                              # Densidad normal estándar
+  ggplot(aes(x = x, y = y)) +
+  geom_line(color = "steelblue", linewidth = 1) +       # Curva normal
+  geom_area(data = . %>% filter(x <= -abs(z_obs)),      # Área cola izquierda
+            fill = "#E74C3C", alpha = 0.4) +
+  geom_area(data = . %>% filter(x >= abs(z_obs)),       # Área cola derecha
+            fill = "#E74C3C", alpha = 0.4) +
+  geom_vline(xintercept = c(-abs(z_obs), abs(z_obs)),   # Líneas en Z observado
+             linetype = "dashed", color = "#E74C3C") +
+  labs(title = "Distribución normal bajo H₀ — Género en cargos directivos",
+       subtitle = paste0("Área sombreada = valor P = ",
+                         round(2 * pnorm(-abs(z_obs)), 3),  # Valor P de dos colas
+                         " → No rechazamos H₀"),
+       x = "Valor Z", y = "Densidad") +
+  theme_minimal()
+```
+:::
+
+
+## Ejemplo 2: Pueblos originarios en el mercado laboral (valor P ≈ 0)
+
+::: {style="font-size: 30px;"}
+Según el Censo 2017, el 12.8% de la población chilena pertenece a un pueblo originario. En una muestra de 300 trabajadores de una empresa minera, solo el 6% declara pertenecer a un pueblo originario. ¿Es esta proporción significativamente diferente de la esperada?
+
+-   **H₀**: p = 0.128 — **Hₐ**: p ≠ 0.128 — **α = 0.05**
+```{r echo=TRUE}
+prop.test(x = 18, n = 300, p = 0.128, alternative = "two.sided")
+```
+:::
+
+## Interpretando el resultado
+
+::: {style="font-size: 30px;"}
+```{r echo=FALSE}
+res2 <- prop.test(x = 18, n = 300, p = 0.128, alternative = "two.sided")
+```
+
+Valor P = `r round(res2$p.value, 4)`
+
+**Decisión con α = 0.05:**
+
+-   `r round(res2$p.value, 4)` **\<** 0.05 → **Rechazamos H₀**
+-   La diferencia **sí es estadísticamente significativa**
+-   Conclusión: la proporción de trabajadores pertenecientes a pueblos originarios en esta empresa es significativamente **menor** que en la población general
+
+<br>
+
+> Este resultado es sustantivamente relevante: sugiere una posible subrepresentación de pueblos originarios en el empleo formal de la empresa, lo que podría indicar barreras de acceso al mercado laboral.
+:::
+
+
+
+## Ejemplo 3: El nivel de significancia (α)
+
+::: {style="font-size: 30px;"}
+En 200 empresas, el 57% de los cargos directivos son ocupados por hombres. ¿Es esta proporción significativamente diferente del 50%?
+```{r echo=TRUE}
+prop.test(x = 114, n = 200, p = 0.50, alternative = "two.sided")
+```
+
+El valor P obtenido es 0.056. La decisión depende del α elegido:
+
+| α | Decisión | Conclusión |
+|------|----------------------------------|-------------------------------|
+| 0.05 | 0.056 **>** 0.05 → **No rechazamos H₀** | No hay evidencia de diferencia |
+| 0.10 | 0.056 **<** 0.10 → **Rechazamos H₀** | Sí hay evidencia de diferencia |
+:::
+
+
+## Lo que el valor P sí y no significa
+
+<br>
+
+::: {style="font-size: 33px;"}
+El valor P **sí significa:**
+
+✅ La probabilidad de observar estos datos (o más extremos) si H₀ fuera verdadera\
+✅ Una medida de compatibilidad entre los datos y H₀\
+✅ Cuanto más pequeño, mayor la evidencia en contra de H₀
+
+<br>
+
+El valor P **no significa:**
+
+❌ La probabilidad de que H₀ sea verdadera\
+❌ Una medida del tamaño o importancia del efecto\
+❌ Que un resultado significativo sea necesariamente relevante
+:::
+
+
+
+## Actividad práctica 3
+
+::: {style="font-size: 33px;"}
+En una sección del script llamada `Valor P`:
+
+1.  Según la Encuesta Nacional de Uso del Tiempo (ENUT), el 65% de las mujeres realiza trabajo doméstico no remunerado de forma cotidiana. En una muestra de 150 mujeres de una región específica, 85 declaran realizar estas tareas diariamente. ¿Es esta proporción significativamente diferente del 65% nacional?
+
+    a.  Formula H₀ y Hₐ.
+    b.  Aplica `prop.test()` con α = 0.05.
+    c.  ¿Rechazas o no rechazas H₀? Escribe la conclusión.
+    d.  ¿Cambia la decisión con α = 0.10?
+
+2.  Calcula manualmente el valor P para Z = 1.96 usando `pnorm()` (prueba de dos colas). ¿Qué observas?
+:::
+
+
+
+
+## ❓ Preguntas y aclaraciones
+
+<br>
+
+💬 **¿Dudas sobre lo visto hoy?**
+
+-   Tómense un momento para reflexionar y compartir preguntas sobre el contenido.
+
+-   Espacio para responder inquietudes y aclarar conceptos clave.
+
+
+## Resumen clase de hoy
+
+✅ Calculamos probabilidades empíricas y condicionales en R
+
+✅ Calculamos el puntaje Z y lo usamos para obtener probabilidades con `pnorm()`
+
+✅ Realizamos pruebas de hipótesis sobre proporciones con `prop.test()`
+
+✅ Interpretamos el valor P en relación con α
+
+
+## 📆 Próxima sesión
+
+<br>
+
+-   Intervalos de confianza en R
+
+## 📚 Sugerencias lecturas para reforzar R
+
+<br>
+
+-   Wickham & Grolemund. R for Data Science (acceso en línea biblioteca, en español: <https://es.r4ds.hadley.nz/>)
+
+-   [AnalizaR Datos Políticos](https://arcruz0.github.io/libroadp/index.html)
+
+-   [YaRrr! The Pirate's Guide to R](https://bookdown.org/ndphillips/YaRrr/)
