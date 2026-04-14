@@ -114,3 +114,24 @@ La carpeta de la clase incluye:
 - `Taller5_ProbabilidadValorP_R.pdf` → versión pdf de la clase
 - `scripts/` → script de actividades de la clase
 - `style.css` → estilos de las presentaciones
+
+--------
+
+## Taller 6: Valor P en R II (14/04/2026)
+
+### Objetivos de la clase
+
+-   **Aplicar en R** la lógica de hipótesis nula y alternativa vista en cátedra
+-   Relacionar el **puntaje Z** con el **valor P** usando `pnorm()` y `qnorm()`
+-   Calcular e interpretar el **valor P** de una prueba sobre proporciones con `prop.test()`
+
+### Contenido de la clase
+
+La carpeta de la clase incluye:
+
+- `Taller6_ValorP_R.qmd` → código fuente en Quarto
+- `Taller6_ValorP_R.html` → versión renderizada de la clase
+- `Taller6_ValorP_R.pdf` → versión pdf de la clase
+- `data/` → datos utilizados para las actividades
+- `scripts/` → script de actividades de la clase
+- `style.css` → estilos de las presentaciones
