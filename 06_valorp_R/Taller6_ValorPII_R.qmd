@@ -1,0 +1,405 @@
+---
+title: "Taller 6: Valor P en R"
+subtitle: "Estadística II"
+author: 
+    - name: M. Constanza Ayala <br> [maria.ayala@uv.cl](mailto:maria.ayala@uv.cl){style="color:#6495ED; font-size:30px;"} <br> [Agenda una reunión aquí](https://outlook.office.com/bookwithme/user/6c3f9a95bb9d4c71abbc4d73b48d50d6@uv.cl/meetingtype/HPNElmMJ_UCckWs5QZTpdw2?anonymous&ismsaljsauthenabled&ep=mLinkFromTile){style="color:#6495ED; font-size:30px;"}
+institute: "Escuela de Sociología - Universidad de Valparaíso"
+date: 14 april 2026
+date-format: 'DD [de] MMMM, YYYY'
+lang: es
+format: 
+  revealjs:
+    theme: default
+    slideNumber: "c/t"
+    css: style.css
+    embed-resources: true
+editor: visual
+---
+
+## Pasemos lista mientras descargan los materiales y dejamos todo listo ✨
+
+::: {style="font-size: 30px;"}
+📂 **Paso 1:** Abrimos nuestro proyecto con doble clic en el archivo `.Rproj`
+
+-   Si no tienen proyecto, creamos uno: `File > New Project > New Directory > New Project` — creamos carpetas: `data`, `scripts`, `figures`, `output`
+
+<br>
+
+💾 **Paso 2:** Movemos el archivo **"Script Taller 6 EstadisticaII.R"** a la carpeta `scripts`
+
+<br>
+
+📎 **Paso 3:** Verificamos que la base **ELSOC_Wide_2016_2023.RData** esté en la carpeta `data`
+
+> **Todos los materiales los pueden descargar en este link: [Materiales clases](https://github.com/mconstanzaa/estadistica-ii-uv-2026/)**
+:::
+
+## Objetivos de la clase
+
+<br>
+
+-   **Aplicar en R** la lógica de hipótesis nula y alternativa
+
+-   Relacionar el **puntaje Z** con el **valor P** usando `pnorm()` y `qnorm()`
+
+-   Calcular e interpretar el **valor P** de una prueba sobre proporciones con `prop.test()`
+
+
+## ¿Qué vimos la última clase?
+
+<br>
+
+✅ Calculamos probabilidades empíricas y condicionales en R\
+✅ Graficamos la distribución normal con `dnorm()` y `ggplot()`\
+✅ Calculamos puntajes Z y probabilidades con `pnorm()`
+
+<br>
+
+💡 ¡Hoy damos el paso hacia las pruebas de hipótesis con valor P!
+
+## Actividades prácticas
+
+A lo largo de la clase realizaremos **dos actividades prácticas** para ejercitar lo visto.
+
+No tienen nota, pero recomiendo resolverlas en un script aparte para que queden como material de estudio.
+
+-   Crea un script nuevo e incluye un título, tu nombre, correo y fecha:
+
+```{r echo=TRUE}
+# Actividades Taller 6 Estadística II --------------------------------------------
+# M. Constanza Ayala (maria.ayala@uv.cl)
+# 14-04-2026
+```
+
+------------------------------------------------------------------------
+
+## Hipótesis nula y alternativa
+
+::: {style="font-size: 30px;"}
+Antes de calcular el valor P, siempre formulamos las hipótesis:
+
+-   **H₀** (nula): afirma que NO hay diferencia o relación — siempre incluye "igual a"
+-   **Hₐ** (alternativa): lo que queremos demostrar
+
+La dirección de Hₐ determina el tipo de prueba:
+
+| Hₐ         | Tipo de prueba     | `alternative` en R |
+|------------|--------------------|--------------------|
+| p ≠ valor  | Dos colas          | `"two.sided"`      |
+| p \> valor | Una cola derecha   | `"greater"`        |
+| p \< valor | Una cola izquierda | `"less"`           |
+
+> H₀ siempre se formula como la negación de lo que queremos demostrar. Se asume verdadera hasta que la evidencia diga lo contrario.
+:::
+
+
+## Nivel de significancia y valores críticos
+
+::: {style="font-size: 28px;"}
+El nivel de significancia (α) es el umbral que definimos **antes** de analizar los datos para decidir si rechazamos H₀:
+
+| Nivel de confianza | α    | Decisión                         |
+|--------------------|------|----------------------------------|
+| 90%                | 0.10 | Si valor P \< 0.10 → rechazar H₀ |
+| 95%                | 0.05 | Si valor P \< 0.05 → rechazar H₀ |
+| 99%                | 0.01 | Si valor P \< 0.01 → rechazar H₀ |
+
+**Regla de decisión:**
+
+-   Valor P ≤ α → **Rechazamos H₀** — la diferencia es estadísticamente significativa
+-   Valor P \> α → **No rechazamos H₀** — la diferencia no es estadísticamente significativa
+
+> El nivel de significancia debe definirse antes de recoger los datos, no después de ver los resultados.
+:::
+
+## Del puntaje Z al valor P
+
+<br>
+
+-   La clase pasada calculamos probabilidades usando el **puntaje Z** y `pnorm()`.
+
+-   Hoy damos un paso más: ese mismo mecanismo es la base del **valor P** en una prueba de hipótesis.
+
+-   El **valor P** es la probabilidad de obtener un resultado igual o más extremo que el observado, asumiendo que la hipótesis nula (H₀) es verdadera.
+
+> En otras palabras: el valor P es un área bajo la curva normal.
+
+
+## `pnorm()` y `qnorm()`: funciones inversas
+
+Ya vimos que `pnorm()` calcula el área a la izquierda de un valor Z. `qnorm()` hace exactamente lo inverso:
+
+<br>
+
+| Función    | Recibe              | Devuelve            |
+|------------|---------------------|---------------------|
+| `pnorm(Z)` | valor Z             | probabilidad (área) |
+| `qnorm(p)` | probabilidad (área) | valor Z             |
+
+```{r echo=TRUE}
+pnorm(1.96)   # → 0.975: el Z = 1.96 deja 97.5% del área a su izquierda
+qnorm(0.975)  # → 1.96:  el área 97.5% corresponde al Z = 1.96
+```
+
+
+## Valores Z críticos con `qnorm()`
+
+::: {style="font-size: 30px;"}
+En una prueba de dos colas, α se divide en partes iguales entre ambas colas. El argumento de `qnorm()` es siempre `1 - α/2`:
+
+```{r echo=TRUE}
+qnorm(0.950)   # α = 0.10 → cada cola = 5.0% → área izquierda = 95.0%
+qnorm(0.975)   # α = 0.05 → cada cola = 2.5% → área izquierda = 97.5%
+qnorm(0.995)   # α = 0.01 → cada cola = 0.5% → área izquierda = 99.5%
+```
+
+| Nivel de confianza | α    | α/2   | Argumento `qnorm()` | Z crítico (±) |
+|--------------------|------|-------|---------------------|---------------|
+| 90%                | 0.10 | 0.050 | `qnorm(0.950)`      | ±1.645        |
+| 95%                | 0.05 | 0.025 | `qnorm(0.975)`      | ±1.960        |
+| 99%                | 0.01 | 0.005 | `qnorm(0.995)`      | ±2.576        |
+
+> `qnorm(p)` devuelve el valor Z que deja el área **p** a su izquierda. Para obtener el Z crítico de dos colas, siempre se calcula `1 - α/2`.
+:::
+
+
+## De `qnorm()` a `prop.test()`
+
+<br>
+
+Con `qnorm()` podríamos comparar manualmente el Z observado con el Z crítico para tomar una decisión. Sin embargo, `prop.test()` hace ese proceso automáticamente y entrega directamente el valor P.
+
+<br>
+
+> A partir de ahora usaremos `prop.test()` — pero entender `qnorm()` permite comprender qué hay detrás del cálculo.
+
+
+
+## Ejemplo 1: Género en cargos directivos (valor P \> 0.05)
+
+::: {style="font-size: 30px;"}
+En Chile, se espera que el 50% de los cargos directivos sean ocupados por mujeres si hubiera paridad. En una muestra de 120 empresas, 53 cargos directivos son ocupados por mujeres (44%). ¿Es esta proporción significativamente diferente del 50%?
+
+-   **H₀**: p = 0.50 — **Hₐ**: p ≠ 0.50 — **α = 0.05**
+
+```{r echo=TRUE}
+prop.test(x = 53,              # número de casos que cumplen la condición
+          n = 120,             # total de casos en la muestra
+          p = 0.50,            # proporción esperada bajo H₀
+          alternative = "two.sided") # Hₐ: p ≠ 0.50
+```
+:::
+
+## Interpretando el resultado
+
+::: {style="font-size: 30px;"}
+```{r echo=FALSE}
+res1 <- prop.test(x = 53, n = 120, p = 0.50, alternative = "two.sided")
+```
+
+Valor P = `r round(res1$p.value, 3)`
+
+**Decisión con α = 0.05:**
+
+-   `r round(res1$p.value, 3)` **\>** 0.05 → **No rechazamos H₀**
+-   La diferencia entre 0.44 y 0.50 **no es estadísticamente significativa**
+-   Conclusión: no hay evidencia suficiente de que la proporción de mujeres en cargos directivos sea diferente del 50%
+
+<br>
+
+> Esto no significa que haya paridad real, solo que con esta muestra de 120 empresas no tenemos suficiente evidencia estadística para afirmar lo contrario. Con una muestra mayor, el resultado podría cambiar.
+:::
+
+## Visualizando el valor P
+
+```{r echo=F}
+library(tidyverse)
+z_obs <- (0.44 - 0.50) / sqrt(0.50 * 0.50 / 120)
+
+tibble(x = seq(-4, 4, 0.01)) %>%
+  mutate(y = dnorm(x)) %>%
+  ggplot(aes(x = x, y = y)) +
+  geom_line(color = "steelblue", linewidth = 1) +
+  geom_area(data = . %>% filter(x <= -abs(z_obs)),
+            fill = "#E74C3C", alpha = 0.4) +
+  geom_area(data = . %>% filter(x >= abs(z_obs)),
+            fill = "#E74C3C", alpha = 0.4) +
+  geom_vline(xintercept = c(-abs(z_obs), abs(z_obs)),
+             linetype = "dashed", color = "#E74C3C") +
+  labs(title = "Distribución normal bajo H₀ — Género en cargos directivos",
+       subtitle = paste0("Área sombreada = valor P = ",
+                         round(2 * pnorm(-abs(z_obs)), 3),
+                         " → No rechazamos H₀"),
+       x = "Valor Z", y = "Densidad") +
+  theme_minimal()
+```
+
+
+## Ejemplo 2: Pueblos originarios en el mercado laboral (valor P ≈ 0)
+
+::: {style="font-size: 30px;"}
+Según el Censo 2017, el 12.8% de la población chilena pertenece a un pueblo originario. En una muestra de 300 trabajadores de una empresa minera, 18 declaran pertenecer a un pueblo originario (6%). ¿Es esta proporción significativamente diferente de la esperada?
+
+-   **H₀**: p = 0.128 — **Hₐ**: p ≠ 0.128 — **α = 0.05**
+
+```{r echo=TRUE}
+prop.test(x = 18, n = 300, p = 0.128, alternative = "two.sided")
+```
+:::
+
+## Interpretando el resultado
+
+::: {style="font-size: 30px;"}
+```{r echo=FALSE}
+res2 <- prop.test(x = 18, n = 300, p = 0.128, alternative = "two.sided")
+```
+
+Valor P = `r round(res2$p.value, 4)`
+
+**Decisión con α = 0.05:**
+
+-   `r round(res2$p.value, 4)` **\<** 0.05 → **Rechazamos H₀**
+-   La diferencia **sí es estadísticamente significativa**
+-   Conclusión: la proporción de trabajadores pertenecientes a pueblos originarios en esta empresa es significativamente **menor** que en la población general
+
+<br>
+
+> Este resultado es sustantivamente relevante: sugiere una posible subrepresentación de pueblos originarios en el empleo formal de la empresa, lo que podría indicar barreras de acceso al mercado laboral.
+:::
+
+## Ejemplo 3: El nivel de significancia (α)
+
+::: {style="font-size: 25px;"}
+En 200 empresas, 114 cargos directivos son ocupados por hombres (57%). ¿Es esta proporción significativamente diferente del 50%?
+
+```{r echo=TRUE}
+prop.test(x = 114, n = 200, p = 0.50, alternative = "two.sided")
+```
+
+El valor P obtenido es 0.056. La decisión depende del α elegido:
+
+| α | Decisión | Conclusión |
+|------------------------|------------------------|------------------------|
+| 0.05 | 0.056 **\>** 0.05 → **No rechazamos H₀** | No hay evidencia de diferencia |
+| 0.10 | 0.056 **\<** 0.10 → **Rechazamos H₀** | Sí hay evidencia de diferencia |
+
+> Por eso el nivel de significancia debe definirse antes de analizar los datos.
+:::
+
+## Lo que el valor P sí y no significa
+
+<br>
+
+::: {style="font-size: 33px;"}
+El valor P **sí significa:**
+
+✅ La probabilidad de observar estos datos (o más extremos) si H₀ fuera verdadera\
+✅ Una medida de compatibilidad entre los datos y H₀\
+✅ Cuanto más pequeño, mayor la evidencia en contra de H₀
+
+<br>
+
+El valor P **no significa:**
+
+❌ La probabilidad de que H₀ sea verdadera\
+❌ Una medida del tamaño o importancia del efecto\
+❌ Que un resultado significativo sea necesariamente relevante
+:::
+
+## Actividad práctica 1
+
+::: {style="font-size: 33px;"}
+En una sección del script llamada `Valor P`:
+
+En un estudio previo, el 65% de las mujeres realiza trabajo doméstico no remunerado de forma cotidiana. En una muestra de 150 mujeres de una región específica, 85 declaran realizar estas tareas diariamente. ¿Es esta proporción significativamente diferente del 65% nacional?
+
+1. Formula H₀ y Hₐ como comentarios (`#`) en el script.
+2. Aplica `prop.test()` con α = 0.05.
+3. ¿Rechazas o no rechazas H₀? Escribe la conclusión como comentario (`#`) en el script.
+4. ¿Cambia la decisión con α = 0.10? Escríbelo como comentario (`#`) en el script.
+
+:::
+
+## Actividad práctica 2 (parte 1)
+
+::: {style="font-size: 27px;"}
+Suponga que estudios previos estiman que el 40% de las mujeres en Chile declara ser la proveedora principal de su hogar. ¿Es la proporción observada en ELSOC 2018 significativamente diferente de ese valor de referencia?
+
+En una sección del script llamada `Ejercicio ELSOC`:
+
+**Paso 1 — Preparar los datos**
+
+```{r echo=TRUE, eval=FALSE}
+library(dplyr)
+load("data/ELSOC_Wide_2016_2023.RData")
+
+data_ejec <- elsoc_wide_2016_2023 %>%
+  filter(ola_w03 == 1,          # ola 2018
+         m0_sexo_w03 == 2) %>%  # mujeres
+  mutate(proveedora = case_when(
+    m19_w03 %in% c(-999, -888) ~ NA_real_,
+    m19_w03 == 1               ~ 1,    # Sí es proveedora principal
+    m19_w03 == 2               ~ 0,    # No es proveedora principal
+    TRUE                       ~ NA_real_
+  ))
+```
+
+**Paso 2 — Calcular la proporción observada**
+
+```{r echo=TRUE, eval=FALSE}
+tabla <- table(data_ejec$proveedora, exclude = FALSE)
+tabla
+prop.table(tabla)
+```
+:::
+
+## Actividad práctica 2 (parte 2)
+
+<br>
+
+**Paso 3 — Aplicar `prop.test()`**
+
+- Usa el n y el número de "Sí" que obtuviste en el paso anterior
+- **H₀**: p = 0.40 — **Hₐ**: p ≠ 0.40 — **α = 0.05**
+- ¿Rechazas o no rechazas H₀? Escribe la conclusión como comentario (`#`) en el script.
+
+
+## ❓ Preguntas y aclaraciones
+
+<br>
+
+💬 **¿Dudas sobre lo visto hoy?**
+
+-   Tómense un momento para reflexionar y compartir preguntas sobre el contenido.
+
+-   Espacio para responder inquietudes y aclarar conceptos clave.
+
+## Resumen clase de hoy
+
+<br>
+
+✅ Formulamos hipótesis nula y alternativa
+
+✅ Relacionamos el puntaje Z con el valor P
+
+✅ Distinguimos `pnorm()` y `qnorm()` como funciones inversas
+
+✅ Realizamos pruebas de hipótesis sobre proporciones con `prop.test()`
+
+✅ Aplicamos `prop.test()` con datos reales de ELSOC
+
+## 📆 Próxima sesión
+
+<br>
+
+-   Intervalos de confianza en R
+
+## 📚 Sugerencias lecturas para reforzar R
+
+<br>
+
+-   Wickham & Grolemund. R for Data Science (acceso en línea biblioteca, en español: <https://es.r4ds.hadley.nz/>)
+
+-   [AnalizaR Datos Políticos](https://arcruz0.github.io/libroadp/index.html)
+
+-   [YaRrr! The Pirate's Guide to R](https://bookdown.org/ndphillips/YaRrr/)
