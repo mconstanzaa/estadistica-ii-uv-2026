@@ -135,3 +135,29 @@ La carpeta de la clase incluye:
 - `data/` → datos utilizados para las actividades
 - `scripts/` → script de actividades de la clase
 - `style.css` → estilos de las presentaciones
+
+--------
+
+## Taller 7: Intervalos de Confianza en R (21/04/2026)
+
+- **Esta clase incluye Ejercicio individual 3**
+
+### Objetivos de la clase
+
+-   Comprender la lógica de los **intervalos de confianza** para medias y proporciones
+-   Calcular IC para medias y proporciones de forma **manual** con `summarise()`
+-   Calcular IC para **medias** con `DescTools::MeanCI()`
+-   Calcular IC para **proporciones** con `DescTools::BinomCI()`
+-   **Visualizar** intervalos de confianza con `ggplot2`
+
+### Contenido de la clase
+
+La carpeta de la clase incluye:
+
+- `Taller7_IntervalosConfianza_R.qmd` → código fuente en Quarto
+- `Taller7_IntervalosConfianza_R.html` → versión renderizada de la clase
+- `Taller7_IntervalosConfianza_R.pdf` → versión pdf de la clase
+- `data/` → datos utilizados en las diapositivas y para el ejercicio
+- `scripts/` → script de actividades de la clase
+- `figures/` → imágenes utilizadas en las diapositivas
+- `style.css` → estilos de las presentaciones
