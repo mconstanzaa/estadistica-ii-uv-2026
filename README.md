@@ -161,3 +161,25 @@ La carpeta de la clase incluye:
 - `scripts/` → script de actividades de la clase
 - `figures/` → imágenes utilizadas en las diapositivas
 - `style.css` → estilos de las presentaciones
+
+--------
+
+## Taller 8: Intervalos de Confianza para Proporciones en R (05/05/2026)
+
+### Objetivos de la clase
+
+-   Calcular IC para **proporciones** de forma **manual** con `summarise()`
+-   Calcular IC para **proporciones** con `DescTools::BinomCI()`
+-   Calcular IC de proporción **agrupado** y **visualizarlo** con `ggplot2`
+-   Comparar IC obtenidos con **distintos niveles de confianza**
+
+### Contenido de la clase
+
+La carpeta de la clase incluye:
+
+- `Taller8_IntervalosConfianzaII_R.qmd` → código fuente en Quarto
+- `Taller8_IntervalosConfianzaII_R.html` → versión renderizada de la clase
+- `Taller8_IntervalosConfianzaII_R.pdf` → versión pdf de la clase
+- `data/` → datos utilizados en las diapositivas y para las actividades
+- `scripts/` → script de actividades de la clase
+- `style.css` → estilos de las presentaciones
