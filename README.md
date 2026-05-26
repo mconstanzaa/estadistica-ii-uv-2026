@@ -183,3 +183,26 @@ La carpeta de la clase incluye:
 - `data/` → datos utilizados en las diapositivas y para las actividades
 - `scripts/` → script de actividades de la clase
 - `style.css` → estilos de las presentaciones
+
+--------
+
+## Taller 9: Muestreo en R (26/05/2026)
+
+### Objetivos de la clase
+
+-   Recordar los principales **tipos de muestreo probabilístico**
+-   Simular el proceso de **muestreo aleatorio simple** con `sample_n()` y `map_dbl()`
+-   Aplicar **muestreo estratificado** con el paquete `sampling`
+-   Aplicar **muestreo por conglomerados** con el paquete `sampling`
+
+### Contenido de la clase
+
+La carpeta de la clase incluye:
+
+- `Taller9_Muestreo_R.qmd` → código fuente en Quarto
+- `Taller9_Muestreo_R.html` → versión renderizada de la clase
+- `Taller9_Muestreo_R.pdf` → versión pdf de la clase
+- `data/` → datos utilizados en las diapositivas y para las actividades
+- `figures/` → imágenes utilizadas en las diapositivas
+- `scripts/` → script de actividades de la clase
+- `style.css` → estilos de las presentaciones
