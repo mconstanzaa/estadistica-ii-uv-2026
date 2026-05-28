@@ -1,0 +1,122 @@
+---
+title: "Trabajo Final – Estadística II"
+subtitle: "Escuela de Sociología – Universidad de Valparaíso"
+author: 
+    - name: M. Constanza Ayala
+      email: maria.ayala@uv.cl
+institute: "Escuela de Sociología – Universidad de Valparaíso"
+date: today
+date-format: 'DD [de] MMMM, YYYY'
+lang: es
+format:
+  pdf:
+    documentclass: article
+    geometry: margin=2.5cm
+    fontsize: 12pt
+    linestretch: 1.5
+    number-sections: false
+    toc: false
+    include-in-header:
+      text: |
+        \usepackage{booktabs}
+        \usepackage{array}
+        \usepackage{enumitem}
+        \setlist[itemize]{noitemsep}
+editor: visual
+---
+
+## Objetivo de la entrega
+
+El objetivo de este trabajo es que los y las estudiantes apliquen los contenidos del curso a través del uso de R, con foco en la manipulación de datos, selección muestral, análisis de distribuciones y estimación de intervalos de confianza. El trabajo debe responder una pregunta sociológica con la siguiente base de datos: **Encuesta CEP N°93 (2025)**. Respecto a esta base, se trabajará con las siguientes variables:
+
+- Posición ideológica: `iden_pol_2` (escala 1–10, donde 1 = izquierda y 10 = derecha)
+- Grupo socioeconómico: `gse` (ABC1, C2, C3, D, E)
+
+\pagebreak
+
+## Instrucciones y criterios de evaluación
+
+### 1. Plantear una pregunta de investigación (0.2 pts)
+
+Formular una pregunta de investigación bivariada y comparativa que involucre las dos variables indicadas. La pregunta debe identificar explícitamente la **unidad de análisis** y la **temporalidad**. No se requiere justificación. Realizar en Word.
+
+Por ejemplo: *¿Cómo varía \[variable cuantitativa\] entre \[grupos\] en \[unidad de análisis\] de Chile en \[año\]?*
+
+### 2. Procesamiento de datos en R (1.0 pts)
+
+a.  Titular el R Script con los/as integrantes del trabajo. Cada sección del script debe estar identificada con un título como comentario (por ejemplo, `# 1. Preparación de los datos`). Cargar paquetes (solo los que va a ocupar), importar la base y explorar su estructura.
+b.  Recodificar los valores -8 y -9 de `iden_pol_2` a `NA` mediante `case_when()`.
+c.  Recodificar `gse` en dos grupos: **alto** (ABC1, C2) y **medio-bajo** (C3, D, E).
+d.  Explorar valores perdidos en ambas variables y excluirlos de la base de datos (por ejemplo, con `drop_na`). Solo excluir perdidos de las variables bajo análisis.
+
+### 3. Describir el diseño muestral de la encuesta (0.8 pt)
+
+a.  Explicar el diseño muestral del CEP 93. Incluir tipo de muestreo (probabilístico, estratificado, por conglomerados, multietápico, según corresponda), población objetivo, marco muestral y error de muestreo.
+b.  Discutir brevemente cómo este diseño puede influir en la representatividad de los resultados y en el análisis estadístico.
+c.  Máximo 300 palabras (se corrige hasta la palabra 300). Realizar en Word.
+
+### 4. Diseñar una muestra estratificada con R (1.5 pt)
+
+Seleccionar una muestra aleatoria **estratificada por `gse`** de 300 casos desde la base original, manteniendo las proporciones de cada grupo socioeconómico con `strata` del paquete `sampling`. Llamarla `data_sample`. Asegurar la reproducibilidad mediante `set.seed()`. Realizarlo en R.
+
+Reportar en Word:
+
+a.  El número total de casos en la base original (incluyendo y excluyendo perdidos).
+b.  El número de casos en la muestra seleccionada con el muestreo estratificado.
+c.  Descriptivos básicos de las dos variables en la base original excluyendo perdidos (media y desviación estándar para variable cuantitativa / frecuencia absoluta y relativa para variable categórica).
+d.  Descriptivos básicos de las dos variables en la muestra seleccionada con el muestreo estratificado (media y desviación estándar para variable cuantitativa / frecuencia absoluta y relativa para variable categórica).
+e. Comparar descriptivos de variable `iden_pol_2` de la base original excluyendo perdidos y la muestra seleccionada con el muestreo estratificado, identificando si los descriptivos de ambas bases son similares y qué implicancias tiene esto para la representatividad de la muestra.
+e.  Explicar cómo el muestreo estratificado preserva la distribución del GSE y cómo se asegura la reproducibilidad del proceso en sus códigos.
+
+- En los siguientes pasos, utilizar la base de datos `data_sample`.
+
+### 5. Explorar la distribución de la variable cuantitativa (0.5 pts)
+
+a.  Reportar y analizar brevemente las medidas de tendencia central (media y mediana) y dispersión (desviación estándar) de `iden_pol_2`.
+b.  Justificar si la variable sigue una distribución normal. Para ello, graficar un histograma con la curva teórica normal superpuesta con `ggplot` o `hist`.
+c.  Realizar cálculos y gráfico en R, reportar y responder en Word.
+d.  Máximo 200 palabras.
+
+### 6. Estimar intervalos de confianza (1.5 pt)
+
+Estimar e interpretar el intervalo de confianza de medias para `iden_pol_2` según grupo socioeconómico usando un 95% de confianza. Reportar gráficamente los IC con `ggplot` y `geom_errorbar`. La interpretación debe mencionar explícitamente el nivel de confianza (95%) y referirse al parámetro poblacional estimado.
+
+a.  Realizar estimación y gráfico en R, reportar y responder en Word.
+b.  Máximo 200 palabras.
+
+### 7. Redactar una conclusión analítica (0.5 pts)
+
+Responder la pregunta de investigación a partir de los intervalos de confianza estimados. Resumir los principales hallazgos y señalar las limitaciones metodológica del análisis para responder la pregunta de investigación. Máximo 300 palabras.
+
+\vspace{0.3cm}
+
+**Punto base: 1.0 pt**
+
+**Total: 7.0 pts**
+
+\vspace{0.3cm}
+
+## Uso de inteligencia artificial
+
+En esta asignatura se permite el uso de herramientas de inteligencia artificial generativa (Copilot y otras) como apoyo a procesos de análisis, redacción y simulación. Su utilización está autorizada en actividades formativas, siempre que se declare explícitamente la herramienta empleada y el tipo de apoyo recibido. El uso de IA no está permitido en evaluaciones sumativas individuales (pruebas, exámenes) salvo indicación expresa de la docente. Todas las instancias de uso deberán enmarcarse en los principios de integridad académica, autoría responsable, protección de datos y transparencia, conforme al Modelo Educativo UV (2024) y la Guía de orientaciones para el uso de la inteligencia artificial (Vicerrectoría Académica UV, 2026).
+
+*En caso de identificar uso de IA sin reportarlo, obtendrán la nota mínima.*
+
+Ejemplo de reporte de uso de IA:
+
+**Declaración de uso de inteligencia artificial generativa**
+
+Durante la elaboración de este trabajo, las/os autoras/es utilizaron herramientas de inteligencia artificial generativa (ChatGPT o la que corresponda) con el fin de apoyar la revisión de aspectos formales del texto, tales como gramática y ortografía. Tras el uso de estas herramientas, el contenido fue revisado y editado según criterio propio, asumiendo plena responsabilidad por la versión final del trabajo.
+
+## Aspectos formales
+
+- Trabajo grupal (máximo 3 integrantes). No se corregirán trabajos individuales o con más de 3 integrantes.
+- Entregar un archivo **Word** y un **R Script**. El nombre de ambos documentos debe incluir el primer apellido de cada integrante en orden alfabético (por ejemplo, `Ayala_Reyes`). Descuento de 0.1 pts en caso de no cumplirlo.
+- Tipo de letra Times New Roman tamaño 12, interlineado 1.5, texto no justificado. Descuento de 0.1 pts en caso de no cumplirlo.
+- La evaluación considera redacción y ortografía. Descuento de 0.1 pts ante problemas relevantes.
+- La entrega se debe realizar en el **Aula Virtual**.
+- **Fecha de entrega: jueves 11 de junio hasta las 23:59 hrs.** No se recibirán trabajos atrasados bajo ninguna circunstancia.
+- Las consultas pueden canalizarse al correo [maria.ayala\@uv.cl](mailto:maria.ayala@uv.cl) hasta el **lunes 8 de junio a las 23:59 hrs.**
+- Se autoriza el uso de lenguaje inclusivo en las evaluaciones del curso a quienes deseen emplearlo, respetando un vocabulario formal, académico y coherente.
+- Las solicitudes de recorrección deberán enviarse por correo electrónico en un plazo máximo de 5 días hábiles desde la entrega de las correcciones, debidamente fundamentadas.
+- Se revisará y penalizará todo acto de plagio con la nota mínima, conforme al artículo 15° del Reglamento del Plan de Estudios de la Carrera de Sociología. La reincidencia implica reprobación automática de la asignatura.
