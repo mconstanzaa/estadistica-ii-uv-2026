@@ -206,3 +206,25 @@ La carpeta de la clase incluye:
 - `figures/` → imágenes utilizadas en las diapositivas
 - `scripts/` → script de actividades de la clase
 - `style.css` → estilos de las presentaciones
+
+--------
+
+## Taller 10: Muestreo II en R (02/06/2026)
+
+### Objetivos de la clase
+
+-   Recordar los principales **tipos de muestreo probabilístico**
+-   Aplicar **muestreo estratificado** con el paquete `sampling`
+-   Aplicar **muestreo por conglomerados** con el paquete `sampling`
+
+### Contenido de la clase
+
+La carpeta de la clase incluye:
+
+- `Taller10_MuestreoII_R.qmd` → código fuente en Quarto
+- `Taller10_MuestreoII_R.html` → versión renderizada de la clase
+- `Taller10_MuestreoII_R.pdf` → versión pdf de la clase
+- `data/` → datos utilizados en las diapositivas y para las actividades
+- `figures/` → imágenes utilizadas en las diapositivas
+- `scripts/` → script de actividades de la clase
+- `style.css` → estilos de las presentaciones
