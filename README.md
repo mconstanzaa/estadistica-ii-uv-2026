@@ -228,3 +228,25 @@ La carpeta de la clase incluye:
 - `figures/` → imágenes utilizadas en las diapositivas
 - `scripts/` → script de actividades de la clase
 - `style.css` → estilos de las presentaciones
+
+--------
+
+## Taller 11: Chi-cuadrado en R (09/06/2026)
+
+### Objetivos de la clase
+
+-   Aplicar la prueba **Chi-cuadrado** ($\chi^2$) para evaluar la relación entre dos variables categóricas
+-   Calcular e interpretar la **V de Cramer** como medida de fuerza de asociación
+-   Analizar los **residuos tipificados corregidos** para identificar qué celdas contribuyen más a la asociación observada
+
+### Contenido de la clase
+
+La carpeta de la clase incluye:
+
+- `Taller11_chi_cuadrado_R.qmd` → código fuente en Quarto
+- `Taller11_chi_cuadrado_R.html` → versión renderizada de la clase
+- `Taller11_chi_cuadrado_R.pdf` → versión pdf de la clase
+- `data/` → datos utilizados en las diapositivas y para las actividades
+- `figures/` → imágenes utilizadas en las diapositivas
+- `scripts/` → script de actividades de la clase
+- `style.css` → estilos de las presentaciones
